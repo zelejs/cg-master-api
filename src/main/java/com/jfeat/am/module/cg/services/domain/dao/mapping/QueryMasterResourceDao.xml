@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cg.services.domain.dao.QueryMasterResourceDao">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <sql id="Base_Column_List">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        cg_master_resource.id, cg_master_resource.org_id AS orgId, cg_master_resource.org_tag AS orgTag, cg_master_resource.name, cg_master_resource.status, cg_master_resource.create_time AS createTime, cg_master_resource.category_id AS categoryId, cg_master_resource.user_id AS userId, cg_master_resource.owner_id AS ownerId, cg_master_resource.code, cg_master_resource.title, cg_master_resource.registered_time AS registeredTime, cg_master_resource.start_time AS startTime, cg_master_resource.end_time AS endTime, cg_master_resource.update_time AS updateTime, cg_master_resource.closed_time AS closedTime, cg_master_resource.expired_time AS expiredTime, cg_master_resource.appointed_time AS appointedTime, cg_master_resource.invalid, cg_master_resource.description, cg_master_resource.note, cg_master_resource.sort_num AS sortNum
+    </sql>
+
+        <sql id="QueryOwnedOrgIds">
+         SELECT children.id FROM t_sys_org, t_sys_org as children WHERE t_sys_org.left_num &lt;= children.left_num AND
+         t_sys_org.right_num >= children.left_num and t_sys_org.id=#{record.orgId} order by t_sys_org.node_level ASC
+    </sql>
+    
+    
+
+    <select id="queryMasterModel" resultType="MasterResourceModel">
+       SELECT cg_master_resource.*
+       FROM cg_master_resource
+       WHERE cg_master_resource.id=#{id}
+       GROUP BY cg_master_resource.id
+    </select>
+
+
+                                                                                            
+    <select id="findMasterResourcePage" resultType="MasterResourceRecord" parameterType="MasterResourceRecord">
+            SELECT <include refid="Base_Column_List"/>
+
+        
+
+        FROM cg_master_resource
+
+        
+                    <if test="record.orgId > 0">
+                ,(<include refid="QueryOwnedOrgIds"></include>) AS ownedOrgIds
+            </if>
+        
+        WHERE 1=1
+                <if test="record.orgId > 0">
+            AND cg_master_resource.org_id = ownedOrgIds.id
+        </if>
+        
+
+        
+                                                                            <if test="record.id != null and record.id>0 ">
+                                    AND cg_master_resource.id LIKE CONCAT('%',#{record.id},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.orgId != null and record.orgId>0 ">
+                                    AND cg_master_resource.org_id IN (<include refid="QueryOwnedOrgIds"/>)
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.orgTag != null and record.orgTag!= ''">
+                                    AND cg_master_resource.org_tag LIKE CONCAT('%',#{record.orgTag},'%')
+                            </if>
+                                                                    <if test="record.name != null and record.name!= ''">
+                                    AND cg_master_resource.name LIKE CONCAT('%',#{record.name},'%')
+                            </if>
+                                                                    <if test="record.status != null and record.status!= ''">
+                                    AND cg_master_resource.status LIKE CONCAT('%',#{record.status},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.createTime != null and record.createTime>0 ">
+                                    AND cg_master_resource.create_time LIKE CONCAT('%',#{record.createTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.categoryId != null and record.categoryId>0 ">
+                                    AND cg_master_resource.category_id LIKE CONCAT('%',#{record.categoryId},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.userId != null and record.userId>0 ">
+                                    AND cg_master_resource.user_id LIKE CONCAT('%',#{record.userId},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.ownerId != null and record.ownerId>0 ">
+                                    AND cg_master_resource.owner_id LIKE CONCAT('%',#{record.ownerId},'%')
+                            </if>
+                                                                    <if test="record.code != null and record.code!= ''">
+                                    AND cg_master_resource.code LIKE CONCAT('%',#{record.code},'%')
+                            </if>
+                                                                    <if test="record.title != null and record.title!= ''">
+                                    AND cg_master_resource.title LIKE CONCAT('%',#{record.title},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.registeredTime != null and record.registeredTime>0 ">
+                                    AND cg_master_resource.registered_time LIKE CONCAT('%',#{record.registeredTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.startTime != null and record.startTime>0 ">
+                                    AND cg_master_resource.start_time LIKE CONCAT('%',#{record.startTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.endTime != null and record.endTime>0 ">
+                                    AND cg_master_resource.end_time LIKE CONCAT('%',#{record.endTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.updateTime != null and record.updateTime>0 ">
+                                    AND cg_master_resource.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.closedTime != null and record.closedTime>0 ">
+                                    AND cg_master_resource.closed_time LIKE CONCAT('%',#{record.closedTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.expiredTime != null and record.expiredTime>0 ">
+                                    AND cg_master_resource.expired_time LIKE CONCAT('%',#{record.expiredTime},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.appointedTime != null and record.appointedTime>0 ">
+                                    AND cg_master_resource.appointed_time LIKE CONCAT('%',#{record.appointedTime},'%')
+                            </if>
+                                                                    <if test="record.invalid != null and record.invalid>0 ">
+                                    AND cg_master_resource.invalid LIKE CONCAT('%',#{record.invalid},'%')
+                            </if>
+                                                                    <if test="record.description != null and record.description!= ''">
+                                    AND cg_master_resource.description LIKE CONCAT('%',#{record.description},'%')
+                            </if>
+                                                                    <if test="record.note != null and record.note!= ''">
+                                    AND cg_master_resource.note LIKE CONCAT('%',#{record.note},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.sortNum != null and record.sortNum>0 ">
+                                    AND cg_master_resource.sort_num LIKE CONCAT('%',#{record.sortNum},'%')
+                            </if>
+        
+        <if test="startTime != null">
+            <![CDATA[AND cg_master_resource.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND cg_master_resource.end_time <= DATE(#{endTime}]]>
+        </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR cg_master_resource.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+                                    </select>
+</mapper>

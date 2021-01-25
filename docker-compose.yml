@@ -1,0 +1,10 @@
+version: "3.4"
+# COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build
+services:
+  api:
+    image: cg-master
+    container_name: cg-master
+    build:
+      context: .
+    ports: 
+      - 8080:8080

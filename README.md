@@ -4,5 +4,5 @@
 ### 一健运行
 
 ```
-curl -sL https://raw.githubusercontent.com/zhaosair/cg-master/master/docker-run.sh | bash -
+curl -sL https://raw.githubusercontent.com/zhaosair/cg-master/master/Docker/docker-run.sh | bash -
 ```

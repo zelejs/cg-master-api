@@ -1,0 +1,19 @@
+version: "3.4"
+# COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build
+services:
+  cg-master:
+    image: zelejs/cg-master:latest
+    container_name: cg-master
+    build:
+      context: ../.
+      dockerfile: ./Docker/Dockerfile
+    volumes: 
+      - ./config/application-test.yml:/webapps/config/application-test.yml
+      - ./api/app.jar:/webapps/app.jar
+    #ports: 
+    #  - 8080:8080
+
+networks: 
+  default:
+    external: 
+      name: sandbox_network

@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3"
 # COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build
 services:
   cg-master:

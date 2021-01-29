@@ -4,7 +4,6 @@ logs/
 .config.json
 *.sh
 *.md
-target/
 Dockerfile
 docker-compose.yml
 docker-compose.yaml

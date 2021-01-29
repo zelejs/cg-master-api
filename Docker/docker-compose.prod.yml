@@ -1,0 +1,35 @@
+version: "3"
+# DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build
+services:
+  api:
+    image: cg:master
+    container_name: api
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./api:/webapps
+    ports:
+      - 8080:8080
+    depends_on: # 这个参数说明 mysqlserver 容器将比 am-api 先启动
+      - mysqlserver
+
+  mysqlserver:
+    #image: daocloud.io/library/mysql:5.7
+    image: zelejs/mysql:5.7
+    container_name: mysqlserver
+    restart: always
+    environment:
+      TZ: "Asia/Shanghai"
+      MYSQL_DATABASE: smartsee
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/logs:/var/log/mysql
+
+  # busybox:
+  #   # docker-compose run --rm -it busybox 
+  #   image: daocloud.io/library/busybox:latest
+  #   container_name: busybox
+  #   command: 
+  #     - nc
+  #     - mysqlserver
+  #     - "3306"
